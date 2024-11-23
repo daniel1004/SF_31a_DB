@@ -4,7 +4,7 @@ import (
 	"GoNews/pkg/api"
 	"GoNews/pkg/storage"
 	"GoNews/pkg/storage/memdb"
-	"GoNews/pkg/storage/mondoDB"
+	mongo "GoNews/pkg/storage/mondoDB"
 	"GoNews/pkg/storage/postgres"
 	"log"
 	"net/http"
@@ -37,14 +37,14 @@ func main() {
 	}
 
 	//// Документная БД MongoDB.
-	db3, err := mongo.New("mongodb://127.0.0.1:27017/", databaseName, collectionName)
+	db3, err := mongo.New("mongodb://172.17.0.2:27017/", databaseName, collectionName)
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, _ = db2, db3
+	_, _, _ = db, db2, db3
 
 	// Инициализируем хранилище сервера конкретной БД.
-	srv.db = db
+	srv.db = db3
 
 	// Создаём объект API и регистрируем обработчики.
 	srv.api = api.New(srv.db)
